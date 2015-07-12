@@ -1,1 +1,14 @@
-Action "index", controller "Connection", module "MongoUI".
+<h2>Connection</h2>
+<section>
+    <?php if ($this->error): ?>
+        <p class="error">Des erreurs sont intervenues durant la validation du formulaire.</p>
+    <?php endif; ?>
+    <p>
+        <?php
+        $form = $this->mongoAuthForm;
+        $form->setAttribute('action', $this->url(null, ['controller'=>'Connection', 'action'=>'connect']));
+        echo $this->form()->render($form);
+        ?>
+    </p>
+    <a href="/"><< retour à l'accueil</a>
+</section>
