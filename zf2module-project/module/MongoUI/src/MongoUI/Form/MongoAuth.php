@@ -56,8 +56,18 @@
                     'value' => '27017'
                 ],
                 'options' => [
-                    'label' => ':',
+                    'label' => 'Port',
                 ],
+            ]);
+            $this->add([
+            	'name' => 'database',
+            	'attributes' => [
+            		'type' => 'text',
+            		'required' => 'required'
+            	],
+            	'options' => [
+            		'label' => 'Database',
+            	],
             ]);
 
             $this->add([

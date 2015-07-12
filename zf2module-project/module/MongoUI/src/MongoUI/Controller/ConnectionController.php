@@ -30,19 +30,30 @@ class ConnectionController extends AbstractActionController
         $mongoAuthForm = new Form\MongoAuth;
         //$mongoAuth->setInputFilter(new InputFilter\User);
         $mongoAuthForm->setData($post);
-
+        
         if(false === $mongoAuthForm->isValid()){
             $view = new ViewModel([
                 'error' => true,
                 'mongoAuthForm' => $mongoAuthForm,
             ]);
             $view->setTemplate('MongoUI/connection/index');
+
             return $view;
         }
-
+        
         $data = $mongoAuthForm->getData();
-
-
+        
+        $mc = new MongoClient("mongodb://".$data['username'].":".$data['password']."@".$data['url'].":".$data['port']."/".$data['database']);
+        
+        $mongoConnections = $mc->getConnections();
+        
+        if(true === empty($mongoConnections)){
+        	echo "Connection Failed";
+        }else{
+        	echo "Connection Success";
+        	//$this->redirect()->toUrl('/mongomyadmin');
+        }
+        
         var_dump($data);
 
         //return $this->redirect()->toRoute(null, ['controller' => 'connection', 'action' => 'confirmation']);
