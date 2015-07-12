@@ -10,6 +10,8 @@ class ConnectionController extends AbstractActionController
 
     public function indexAction()
     {
+
+        $mc = new MongoClient('mongodb://user:pass@adress:port/db');
         return new ViewModel();
     }
 
