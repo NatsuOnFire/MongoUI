@@ -1,1 +1,31 @@
-index
+<div class="container">
+	<div class="row">
+		<h3>Database : <?php echo $this->database; ?></h3>
+		<div class="col-sm-3">
+			<ul>
+			<?php 
+				$collections = $this->collections;
+				foreach ($collections as $collection){ ?>
+					<li><a href="/mongomyadmin/index?collection=<?php echo $collection->getName(); ?>"><?php echo $collection->getName(); ?></a></li>		
+				<?php }
+			?>
+			</ul>
+		</div>
+		<div class="col-sm-9">
+			<table border="1" width="100%">
+				<tr>
+					<?php foreach ($this->header as $key){ ?>
+						<th><?php echo $key; ?></th>
+					<?php }?>
+				</tr>
+				<?php foreach ($this->cursor as $doc){ ?>
+					<tr>
+					<?php foreach ($doc as $key => $value){ ?>
+						<td><?php echo $value; ?></td>
+					<?php } ?>
+					</tr>
+				<?php }?>
+			</table>
+		</div>
+	</div>
+</div>

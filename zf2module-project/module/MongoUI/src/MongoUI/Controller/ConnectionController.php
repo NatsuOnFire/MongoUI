@@ -4,6 +4,7 @@ namespace MongoUI\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Session\Container;
 use MongoClient;
 
 use MongoUI\Form;
@@ -43,19 +44,23 @@ class ConnectionController extends AbstractActionController
         
         $data = $mongoAuthForm->getData();
         
-        $mc = new MongoClient("mongodb://".$data['username'].":".$data['password']."@".$data['url'].":".$data['port']."/".$data['database']);
+        $connection = "mongodb://".$data['username'].":".$data['password']."@".$data['url'].":".$data['port']."/".$data['database'];
+        $mc = new MongoClient($connection);
         
         $mongoConnections = $mc->getConnections();
         
         if(true === empty($mongoConnections)){
         	echo "Connection Failed";
         }else{
-        	echo "Connection Success";
-        	//$this->redirect()->toUrl('/mongomyadmin');
+      	
+        	$container = new Container('mongoUI');
+			$container->connected = 'true';
+			$container->database = $data['database'];
+			$container->mongoClient = $connection;
+			
+        	$this->redirect()->toUrl('/mongomyadmin');
         }
         
-        var_dump($data);
-
         //return $this->redirect()->toRoute(null, ['controller' => 'connection', 'action' => 'confirmation']);
     }
 

@@ -41,4 +41,10 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+	'session' => array(
+		'remember_me_seconds'  => 1200,
+		'use_cookies'          => true,
+		'cookie_httponly'      => true,
+		'cookie_domain'        => '',
+	),
 ];
