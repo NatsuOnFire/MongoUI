@@ -57,11 +57,18 @@ class IndexController extends AbstractActionController {
 		$this->init ();
 		
 		if (isset ( $_POST ["update"] )) {
-			$id = $_POST ["tempId"];
-			$collection = new MongoCollection ( $this->db, $_POST ["collection"] );
+			
+			if(false === $this->request->isPost()){
+				return $this->redirect ()->toUrl ( "/mongomyadmin?collection=" . $_POST["collection"] );
+			}
+			
+			$post = $this->request->getPost();
+			
+			$id = $post->tempId;
+			$collection = new MongoCollection ( $this->db, $post->collection );
 			
 			$set = array ();
-			foreach ( $_POST as $key => $value ) {
+			foreach ( $post as $key => $value ) {
 				if ($key != "collection" && $key != "update" && $key != "tempId") {
 					if ($key === "_id") {
 						$set [$key] = new MongoId ( $value );
@@ -71,13 +78,13 @@ class IndexController extends AbstractActionController {
 				}
 			}
 			
-			$collection->update ( array (
-					"_id" => new MongoId ( $id ) 
-			), $set, array (
+			$collection->update ( 
+					array ("_id" => new MongoId ( $id ) ), 
+					$set, array (
 					"upsert" => true 
 			) );
 			
-			return $this->redirect ()->toUrl ( "/mongomyadmin?collection=" . $_POST ["collection"] );
+			return $this->redirect ()->toUrl ( "/mongomyadmin?collection=" . $post->collection);
 		} else {
 			$view = new ViewModel ();
 			
@@ -129,11 +136,17 @@ class IndexController extends AbstractActionController {
 		$this->init ();
 		
 		if (isset ( $_POST ["add"] )) {
-
-			$collection = new MongoCollection ( $this->db, $_POST ["collection"] );
+			
+			if(false === $this->request->isPost()){
+				return $this->redirect ()->toUrl ( "/mongomyadmin?collection=" . $_POST["collection"] );
+			}
+			
+			$post = $this->request->getPost();
+			
+			$collection = new MongoCollection ( $this->db, $post->collection);
 			
 			$document = array ();
-			foreach ( $_POST as $key => $value ) {
+			foreach ( $post as $key => $value ) {
 				if ($key != "collection" && $key != "add") {
 					$document[$key] = $value;
 				}
