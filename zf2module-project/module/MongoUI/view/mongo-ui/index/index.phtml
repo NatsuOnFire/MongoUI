@@ -12,20 +12,29 @@
 			</ul>
 		</div>
 		<div class="col-sm-9">
-			<table border="1" width="100%">
-				<tr>
-					<?php foreach ($this->header as $key){ ?>
-						<th><?php echo $key; ?></th>
-					<?php }?>
-				</tr>
-				<?php foreach ($this->cursor as $doc){ ?>
+			<?php if(isset($_GET["collection"]) && $_GET["collection"] != ""){?>
+				<table border="1" width="100%">
 					<tr>
-					<?php foreach ($doc as $key => $value){ ?>
-						<td><?php echo $value; ?></td>
-					<?php } ?>
+						<th>Actions</th>
+						<?php foreach ($this->header as $key){ ?>
+							<th><?php echo $key; ?></th>
+						<?php }?>
 					</tr>
-				<?php }?>
-			</table>
+					<?php foreach ($this->cursor as $doc){ ?>
+						<tr>
+							<td>
+								<a href="/mongomyadmin/index/update?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Update</a> |
+								<a href="/mongomyadmin/index/remove?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Remove</a>
+							</td>
+						<?php foreach ($doc as $key => $value){ ?>
+							<td><?php echo $value; ?></td>
+						<?php } ?>
+						</tr>
+					<?php }?>
+				</table>
+				<br/>
+				<a href="/mongomyadmin/index/add?collection=<?php echo $_GET["collection"];?>">Add Document</a>
+			<?php }?>
 		</div>
 	</div>
 </div>

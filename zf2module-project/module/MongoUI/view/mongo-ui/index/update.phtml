@@ -1,0 +1,14 @@
+<h2>Update Document in <?php echo $this->collection; ?></h2>
+<section>
+    <?php if ($this->error): ?>
+        <p class="error">Des erreurs sont intervenues durant la validation du formulaire.</p>
+    <?php endif; ?>
+    <p>
+        <?php
+        $form = $this->mongoUpdateDocumentForm;
+        $form->setAttribute('action', $this->url(null, ['controller'=>'Index', 'action'=>'update']));
+        echo $this->form()->render($form);
+        ?>
+    </p>
+    <a href="/mongomyadmin?collection=<?php echo $this->collection;?>"><< return to Collection</a>
+</section>
