@@ -10,22 +10,7 @@ class Module
 {
 	public function onBootstrap(EventInterface $em)
 	{
-		$this->initializeSession($em);
-	}
-	
-	public function initializeSession($em)
-	{
-		$config = $em->getApplication()
-					->getServiceManager()
-					->get('Config');
-	
-		$sessionConfig = new SessionConfig();
-		$sessionConfig->setOptions($config['session']);
-	
-		$sessionManager = new SessionManager($sessionConfig);
-		$sessionManager->start();
-	
-		Container::setDefaultManager($sessionManager); //au cas ou on utilise plusieurs SessionManagers
+		$manager = $em->getApplication()->getServiceManager()->get('Zend\Session\ManagerInterface');
 	}
 	
     public function getConfig()
