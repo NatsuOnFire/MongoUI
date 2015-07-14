@@ -19,7 +19,7 @@ class MongoUpdateDocument extends Form{
 					'value' => $value
 				],
 				'options' => [
-					'label' => ucfirst($key),
+					'label' => ucfirst($key)." :",
 				],
 			]);
 		}

@@ -1,0 +1,12 @@
+form label{
+	display: block;
+}
+
+form label span{
+	width: 20%;
+	display: inline-block;
+}
+
+form label input{
+	width: 80%;
+}

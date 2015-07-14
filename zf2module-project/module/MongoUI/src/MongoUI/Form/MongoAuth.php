@@ -23,7 +23,7 @@
                     'required' => 'required'
                 ],
                 'options' => [
-                    'label' => 'Username',
+                    'label' => 'Username :',
                 ],
             ]);
 
@@ -34,7 +34,7 @@
                     'required' => 'required'
                 ],
                 'options' => [
-                    'label' => 'Mot de passe',
+                    'label' => 'Password :',
                 ],
             ]);
 
@@ -45,7 +45,7 @@
                     'required' => 'required'
                 ],
                 'options' => [
-                    'label' => 'URL',
+                    'label' => 'Host :',
                 ],
             ]);
             $this->add([
@@ -56,7 +56,7 @@
                     'value' => '27017'
                 ],
                 'options' => [
-                    'label' => 'Port',
+                    'label' => 'Port :',
                 ],
             ]);
             $this->add([
@@ -66,7 +66,7 @@
             		'required' => 'required'
             	],
             	'options' => [
-            		'label' => 'Database',
+            		'label' => 'Database :',
             	],
             ]);
 

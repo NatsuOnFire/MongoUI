@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row">
-		<h3>Database : <?php echo $this->database; ?></h3>
 		<div class="col-sm-3">
+			<h3>Database : <?php echo $this->database; ?></h3>
 			<ul>
 			<?php 
 				$collections = $this->collections;
@@ -12,6 +12,9 @@
 			</ul>
 		</div>
 		<div class="col-sm-9">
+			<?php
+			require_once 'menu.phtml';
+			?>
 			<?php if(isset($_GET["collection"]) && $_GET["collection"] != ""){?>
 				<table border="1" width="100%">
 					<tr>

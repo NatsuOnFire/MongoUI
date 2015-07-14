@@ -19,7 +19,7 @@ class MongoAddDocument extends Form{
 						'type' => 'text'
 					],
 					'options' => [
-						'label' => ucfirst($key),
+						'label' => ucfirst($key)." :",
 					],
 				]);
 			}
