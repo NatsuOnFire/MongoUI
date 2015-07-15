@@ -12,16 +12,30 @@ class MongoUpdateDocument extends Form{
 		$this->setAttribute('enctype', 'multipart/form-data');
 		
 		foreach ($document as $key => $value){
-			$this->add([
-				'name' => $key,
-				'attributes' => [
-					'type' => 'text',
-					'value' => $value
-				],
-				'options' => [
-					'label' => ucfirst($key)." :",
-				],
-			]);
+			if($key === "_id"){
+				$this->add([
+					'name' => $key,
+					'attributes' => [
+						'type' => 'text',
+						'value' => $value,
+						'disabled' => 'disabled'
+					],
+					'options' => [
+						'label' => ucfirst($key)." :",
+					],
+				]);
+			}else{
+				$this->add([
+					'name' => $key,
+					'attributes' => [
+						'type' => 'text',
+						'value' => $value
+					],
+					'options' => [
+						'label' => ucfirst($key)." :",
+					],
+				]);
+			}
 		}
 		
 		$this->add([

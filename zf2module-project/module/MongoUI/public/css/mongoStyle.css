@@ -10,3 +10,8 @@ form label span{
 form label input{
 	width: 80%;
 }
+
+ul.listCollection li{
+	list-style: none;
+	text-decoration: none;
+}

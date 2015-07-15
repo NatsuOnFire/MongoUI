@@ -1,12 +1,24 @@
 <div class="container">
 	<div class="row">
 		<div class="col-sm-3">
-			<h3>Database : <?php echo $this->database; ?></h3>
-			<ul>
+			<h3><i class="fa fa-database"></i>&nbsp;<?php echo $this->database; ?></h3>
+			<ul class="listCollection">
 			<?php 
 				$collections = $this->collections;
-				foreach ($collections as $collection){ ?>
-					<li><a href="/mongomyadmin/index?collection=<?php echo $collection->getName(); ?>"><?php echo $collection->getName(); ?></a></li>		
+				foreach ($collections as $collection){ 
+					if(isset($_GET["collection"]) && $collection->getName() === $_GET["collection"]){ ?>
+						<li>
+							<a class="btn btn-success active" href="/mongomyadmin/index?collection=<?php echo $collection->getName(); ?>">
+								<i class="fa fa-file-text"></i>&nbsp;<?php echo $collection->getName(); ?>
+							</a>
+						</li>
+					<?php }else{?>
+						<li>
+							<a class="btn btn-default" href="/mongomyadmin/index?collection=<?php echo $collection->getName(); ?>">
+								<i class="fa fa-file-text"></i>&nbsp;<?php echo $collection->getName(); ?>
+							</a>
+						</li>		
+					<?php }?>
 				<?php }
 			?>
 			</ul>
@@ -16,7 +28,7 @@
 			require_once 'menu.phtml';
 			?>
 			<?php if(isset($_GET["collection"]) && $_GET["collection"] != ""){?>
-				<table border="1" width="100%">
+				<table class="table-striped table-bordered table-hover table-condensed" width="100%">
 					<tr>
 						<th>Actions</th>
 						<?php foreach ($this->header as $key){ ?>

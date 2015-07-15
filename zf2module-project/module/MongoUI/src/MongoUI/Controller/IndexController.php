@@ -37,10 +37,12 @@ class IndexController extends AbstractActionController {
 				$cursor = $collection->find ();
 				
 				$keys = array ();
-				foreach ( $cursor as $doc ) {
+				/*foreach ( $cursor as $doc ) {
 					$keys = $this->getKeys ( $doc );
 					break;
-				}
+				}*/
+				
+				$keys = $this->getKeys ( $cursor );
 				
 				$view->header = $keys;
 				$view->cursor = $cursor;
@@ -72,20 +74,15 @@ class IndexController extends AbstractActionController {
 				
 				$set = array ();
 				foreach ( $post as $key => $value ) {
-					if ($key != "collection" && $key != "update" && $key != "tempId") {
-						if ($key === "_id") {
-							$set [$key] = new MongoId ( $value );
-						} else {
-							$set [$key] = $value;
-						}
+					if ($key != "collection" && $key != "update" && $key != "_id" && $key != "tempId") {
+						$set [$key] = $value;
 					}
 				}
 				
 				$collection->update ( 
-						array ("_id" => new MongoId ( $id ) ), 
-						$set, array (
-						"upsert" => true 
-				) );
+					array ("_id" => new MongoId ( $id ) ), 
+					$set
+				);
 				
 				return $this->redirect ()->toUrl ( "/mongomyadmin?collection=" . $post->collection);
 			} else {
@@ -169,9 +166,9 @@ class IndexController extends AbstractActionController {
 					$view->setTemplate ( "/mongomyadmin" );
 				} else {
 					$collection = new MongoCollection ( $this->db, $_GET ["collection"] );
-					$document = $collection->findOne();
+					$cursor = $collection->find();
 					
-					$keys = $this->getKeys($document);
+					$keys = $this->getKeys($cursor);
 					
 					$view->collection = $_GET ["collection"];
 					$view->mongoAddDocumentForm = new Form\MongoAddDocument ( null, $keys, $collection );
@@ -185,7 +182,9 @@ class IndexController extends AbstractActionController {
 	public function logoutAction(){
 
 		$this->init();
-		$this->mc->close();
+		if($this->mc != null){
+			$this->mc->close();
+		}
 		unset($_SESSION['mongoUI']);
 		
 		return $this->redirect ()->toUrl ( '/mongomyadmin/connection/index' );
@@ -196,11 +195,16 @@ class IndexController extends AbstractActionController {
 	 * 
 	 * @param array $array
 	 */
-	private function getKeys(array $array) {
+	private function getKeys($cursor) {
 		$keys = array ();
-		while ( $data = current ( $array ) ) {
-			array_push ( $keys, key ( $array ) );
-			next ( $array );
+		
+		foreach ( $cursor as $doc ) {
+			while ( $data = current ( $doc ) ) {
+				if(!in_array(key($doc), $keys)){
+					array_push ( $keys, key ( $doc ) );
+				}
+				next ( $doc );
+			}
 		}
 		
 		return $keys;
