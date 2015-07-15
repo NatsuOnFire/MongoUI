@@ -41,9 +41,14 @@
 								<a href="/mongomyadmin/index/update?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Update</a> |
 								<a href="/mongomyadmin/index/remove?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Remove</a>
 							</td>
-						<?php foreach ($doc as $key => $value){ ?>
-							<td><?php echo $value; ?></td>
-						<?php } ?>
+
+							<?php foreach ($this->header as $key){
+								if(array_key_exists($key, $doc)){?>
+									<td><?php echo $doc[$key]; ?></td>
+								<?php }else{?>
+									<td style="background-color: #3B291F;"></td>
+								<?php }
+							}?>
 						</tr>
 					<?php }?>
 				</table>
