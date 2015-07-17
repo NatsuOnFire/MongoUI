@@ -2,23 +2,23 @@
 	<div class="row">
 		<div class="col-sm-3">
 			<h3><i class="fa fa-database"></i>&nbsp;<?php echo $this->database; ?></h3>
+			<a href="/mongomyadmin/collection/add">Add</a>
 			<ul class="listCollection">
 			<?php 
 				$collections = $this->collections;
-				foreach ($collections as $collection){ 
-					if(isset($_GET["collection"]) && $collection->getName() === $_GET["collection"]){ ?>
-						<li>
-							<a class="btn btn-success active" href="/mongomyadmin/index?collection=<?php echo $collection->getName(); ?>">
-								<i class="fa fa-file-text"></i>&nbsp;<?php echo $collection->getName(); ?>
-							</a>
-						</li>
+				foreach ($collections as $collection){ ?>
+					<li>
+						<a class="removeCollection" href="/mongomyadmin/collection/remove?collection=<?php echo $collection->getName(); ?>"><i class="fa fa-trash fa-2x"></i></a>
+					<?php if(isset($_GET["collection"]) && $collection->getName() === $_GET["collection"]){ ?>
+						<a class="btn btn-success active collection" href="/mongomyadmin/index?collection=<?php echo $collection->getName(); ?>">
+							<i class="fa fa-file-text"></i>&nbsp;<?php echo $collection->getName(); ?>
+						</a>
 					<?php }else{?>
-						<li>
-							<a class="btn btn-default" href="/mongomyadmin/index?collection=<?php echo $collection->getName(); ?>">
-								<i class="fa fa-file-text"></i>&nbsp;<?php echo $collection->getName(); ?>
-							</a>
-						</li>		
+						<a class="btn btn-default collection" href="/mongomyadmin/index?collection=<?php echo $collection->getName(); ?>">
+							<i class="fa fa-file-text"></i>&nbsp;<?php echo $collection->getName(); ?>
+						</a>	
 					<?php }?>
+					</li>
 				<?php }
 			?>
 			</ul>
@@ -28,31 +28,35 @@
 			require_once 'menu.phtml';
 			?>
 			<?php if(isset($_GET["collection"]) && $_GET["collection"] != ""){?>
-				<table class="table-striped table-bordered table-hover table-condensed" width="100%">
-					<tr>
-						<th>Actions</th>
-						<?php foreach ($this->header as $key){ ?>
-							<th><?php echo $key; ?></th>
-						<?php }?>
-					</tr>
-					<?php foreach ($this->cursor as $doc){ ?>
+				<?php if(count($this->header) > 0){?>
+					<table class="table-striped table-bordered table-hover table-condensed" width="100%">
 						<tr>
-							<td>
-								<a href="/mongomyadmin/index/update?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Update</a> |
-								<a href="/mongomyadmin/index/remove?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Remove</a>
-							</td>
-
-							<?php foreach ($this->header as $key){
-								if(array_key_exists($key, $doc)){?>
-									<td><?php echo $doc[$key]; ?></td>
-								<?php }else{?>
-									<td style="background-color: #3B291F;"></td>
-								<?php }
-							}?>
+							<th>Actions</th>
+							<?php foreach ($this->header as $key){ ?>
+								<th><?php echo $key; ?></th>
+							<?php }?>
 						</tr>
-					<?php }?>
-				</table>
-				<br/>
+						<?php foreach ($this->cursor as $doc){ ?>
+							<tr>
+								<td>
+									<a href="/mongomyadmin/index/update?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Update</a> |
+									<a href="/mongomyadmin/index/remove?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Remove</a>
+								</td>
+	
+								<?php foreach ($this->header as $key){
+									if(array_key_exists($key, $doc)){?>
+										<td><?php echo $doc[$key]; ?></td>
+									<?php }else{?>
+										<td style="background-color: #3B291F;"></td>
+									<?php }
+								}?>
+							</tr>
+						<?php }?>
+					</table>
+					<br/>
+				<?php }else{?>
+					<p>This collection is empty.</p>
+				<?php }?>
 				<a href="/mongomyadmin/index/add?collection=<?php echo $_GET["collection"];?>">Add Document</a>
 			<?php }?>
 		</div>

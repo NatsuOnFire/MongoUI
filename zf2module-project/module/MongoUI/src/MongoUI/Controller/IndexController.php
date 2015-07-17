@@ -34,16 +34,12 @@ class IndexController extends AbstractActionController {
 			
 			if (isset ( $_GET ["collection"] ) && $_GET ["collection"] != "") {
 				$collection = new MongoCollection ( $this->db, $_GET ["collection"] );
-				$cursor = $collection->find ();
+				$cursor = $collection->find();
 				
 				$keys = array ();
-				/*foreach ( $cursor as $doc ) {
-					$keys = $this->getKeys ( $doc );
-					break;
-				}*/
 				
 				$keys = $this->getKeys ( $cursor );
-				
+
 				$view->header = $keys;
 				$view->cursor = $cursor;
 			}
@@ -149,10 +145,20 @@ class IndexController extends AbstractActionController {
 				
 				$collection = new MongoCollection ( $this->db, $post->collection);
 				
+				$i = 1;
 				$document = array ();
 				foreach ( $post as $key => $value ) {
-					if ($key != "collection" && $key != "add") {
-						$document[$key] = $value;
+					if ($key != "collection" && $key != "numberField" && $key != "add" && !$this->startsWith($key, "fieldValue")) {
+						if($this->startsWith($key, "fieldName")){
+							if($post["fieldName".$i] != ""){
+								$tempKey = $post["fieldName".$i];
+								$tempValue = $post["fieldValue".$i];
+								$document[$tempKey] = $tempValue;
+							}
+							$i++;
+						}else{
+							$document[$key] = $value;
+						}
 					}
 				}
 				
@@ -197,16 +203,15 @@ class IndexController extends AbstractActionController {
 	 */
 	private function getKeys($cursor) {
 		$keys = array ();
-		
-		foreach ( $cursor as $doc ) {
-			while ( $data = current ( $doc ) ) {
-				if(!in_array(key($doc), $keys)){
-					array_push ( $keys, key ( $doc ) );
+			
+		foreach ( $cursor as $doc ) {			
+			foreach($doc as $key => $value){
+				if(!in_array($key, $keys)){
+					array_push ( $keys, $key);
 				}
-				next ( $doc );
 			}
 		}
-		
+				
 		return $keys;
 	}
 	
@@ -224,6 +229,10 @@ class IndexController extends AbstractActionController {
 			$this->db = $this->mc->selectDB ( $this->database );
 			return true;
 		}
+	}
+	
+	function startsWith($haystack, $needle) {
+		return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
 	}
 }
 

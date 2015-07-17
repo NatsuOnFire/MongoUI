@@ -2,16 +2,37 @@ form label{
 	display: block;
 }
 
-form label span{
+form label span, form label input.fieldName{
 	width: 20%;
 	display: inline-block;
 }
 
-form label input{
+form label input, form label input.fieldValue{
 	width: 80%;
+}
+
+button#addField{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+ul.listCollection{
+	padding-left: 0;
 }
 
 ul.listCollection li{
 	list-style: none;
 	text-decoration: none;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+ul.listCollection li a.collection{
+	width: 90%;
+	text-align: left !important;
+}
+
+ul.listCollection li a.removeCollection{
+	vertical-align: bottom;
 }

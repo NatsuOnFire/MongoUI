@@ -6,7 +6,7 @@ use Zend\Form\Element;
 
 class MongoAddDocument extends Form{
 	public function __construct($name = null, array $keys, $collection){
-		parent::__construct('MongoUpdateDocument');
+		parent::__construct('MongoAddDocument');
 		
 		$this->setAttribute('method', 'post');
 		$this->setAttribute('enctype', 'multipart/form-data');
@@ -30,6 +30,15 @@ class MongoAddDocument extends Form{
 			'attributes' => [
 					'type' => 'hidden',
 					'value' => $collection->getName()
+			],
+		]);
+		
+		$this->add([
+			'name' => 'numberField',
+			'attributes' => [
+				'type' => 'hidden',
+				'value' => 1,
+				'id' => 'numberField'
 			],
 		]);
 		

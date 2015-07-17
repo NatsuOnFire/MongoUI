@@ -9,6 +9,8 @@
         $form->setAttribute('action', $this->url(null, ['controller'=>'Index', 'action'=>'add']));
         echo $this->form()->render($form);
         ?>
+        
+        <br/><button id="addField">Add Field</button>
     </p>
     <a href="/mongomyadmin?collection=<?php echo $this->collection;?>"><< return to Collection</a>
 </section>

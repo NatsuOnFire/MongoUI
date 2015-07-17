@@ -3,7 +3,8 @@ return [
 	'controllers' => [
 		'invokables' => [
 			'MongoUI\Controller\Index' => 'MongoUI\Controller\IndexController',
-			'MongoUI\Controller\Connection' => 'MongoUI\Controller\ConnectionController'
+			'MongoUI\Controller\Connection' => 'MongoUI\Controller\ConnectionController',
+			'MongoUI\Controller\Collection' => 'MongoUI\Controller\CollectionController'
 		]
 	],
 	'router' => [

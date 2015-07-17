@@ -1,0 +1,14 @@
+<h2>Add Collection</h2>
+<section>
+    <?php if ($this->error): ?>
+        <p class="error">Des erreurs sont intervenues durant la validation du formulaire.</p>
+    <?php endif; ?>
+    <p>
+        <?php
+        $form = $this->mongoAddCollectionForm;
+        $form->setAttribute('action', $this->url(null, ['controller'=>'Collection', 'action'=>'add']));
+        echo $this->form()->render($form);
+        ?>
+    </p>
+    <a href="/mongomyadmin"><< return Home</a>
+</section>
