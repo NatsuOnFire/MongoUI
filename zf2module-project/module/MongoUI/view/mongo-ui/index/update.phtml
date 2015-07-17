@@ -7,8 +7,37 @@
         <?php
         $form = $this->mongoUpdateDocumentForm;
         $form->setAttribute('action', $this->url(null, ['controller'=>'Index', 'action'=>'update']));
-        echo $this->form()->render($form);
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        
+        foreach ($this->keys as $key){
+        	echo $this->formLabel()->openTag($form->get($key));
+        	echo "<span>".ucfirst($key)." :</span>";
+        	echo $this->formInput($form->get($key));
+        	echo "<i class='fa fa-trash trashField'></i>";
+        	echo $this->formLabel()->closeTag();
+        }
+        
+        echo $this->formRow($form->get('tempId'));
+        echo $this->formRow($form->get('collection'));
+        echo $this->formRow($form->get('numberField'));
+        echo $this->formSubmit($form->get('update'));
+        
+        echo $this->form()->closeTag();
+        //echo $this->form()->render($form);
         ?>
+        
+        <br/><button id="addField">Add Field</button>
     </p>
     <a href="/mongomyadmin?collection=<?php echo $this->collection;?>"><< return to Collection</a>
 </section>
+
+<script>
+function trashCustomField(){
+	var number = parseInt($("#numberField").val(), 10);
+	
+	$("#label"+(number-1)).remove();
+	$("<i id='trashCustomField' onclick='trashCustomField()' class='fa fa-trash'></i>").appendTo($("#label"+(number-2)));
+	$("#numberField").val(number-1)
+}
+</script>

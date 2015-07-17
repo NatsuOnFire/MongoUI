@@ -68,10 +68,20 @@ class IndexController extends AbstractActionController {
 				$id = $post->tempId;
 				$collection = new MongoCollection ( $this->db, $post->collection );
 				
+				$i = 1;
 				$set = array ();
 				foreach ( $post as $key => $value ) {
-					if ($key != "collection" && $key != "update" && $key != "_id" && $key != "tempId") {
-						$set [$key] = $value;
+					if ($key != "collection" && $key != "update" && $key != "_id" && $key != "tempId" && $key != "numberField" && !$this->startsWith($key, "fieldValue")) {
+						if($this->startsWith($key, "fieldName")){
+							if($post["fieldName".$i] != ""){
+								$tempKey = $post["fieldName".$i];
+								$tempValue = $post["fieldValue".$i];
+								$set[$tempKey] = $tempValue;
+							}
+							$i++;
+						}else{
+							$set[$key] = $value;
+						}
 					}
 				}
 				
@@ -93,12 +103,22 @@ class IndexController extends AbstractActionController {
 							'_id' => new MongoId ( $id ) 
 					) );
 					
+					$keys = array();
+					foreach($document as $key => $value){
+						if(!in_array($key, $keys)){
+							array_push ( $keys, $key);
+						}
+					}
+						
+					$view->keys = $keys;
 					$view->collection = $_GET ["collection"];
 					$view->mongoUpdateDocumentForm = new Form\MongoUpdateDocument ( null, $document, $collection );
 				}
 				
 				return $view;
 			}
+		}else{
+			return $this->redirect ()->toUrl ( "/mongomyadmin");
 		}
 	}
 	
@@ -125,6 +145,8 @@ class IndexController extends AbstractActionController {
 			}
 			
 			return $view;
+		}else{
+			return $this->redirect ()->toUrl ( "/mongomyadmin");
 		}
 	}
 	
@@ -176,12 +198,15 @@ class IndexController extends AbstractActionController {
 					
 					$keys = $this->getKeys($cursor);
 					
+					$view->keys = $keys;
 					$view->collection = $_GET ["collection"];
 					$view->mongoAddDocumentForm = new Form\MongoAddDocument ( null, $keys, $collection );
 				}
 				
 				return $view;
 			}
+		}else{
+			return $this->redirect ()->toUrl ( "/mongomyadmin");
 		}
 	}
 	

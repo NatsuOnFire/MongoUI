@@ -55,6 +55,15 @@ class MongoUpdateDocument extends Form{
 		]);
 		
 		$this->add([
+			'name' => 'numberField',
+			'attributes' => [
+				'type' => 'hidden',
+				'value' => 1,
+				'id' => 'numberField'
+			],
+		]);
+		
+		$this->add([
 			'name' => 'update',
 			'attributes' => [
 				'type' => 'submit',
