@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-sm-3">
 			<h3><i class="fa fa-database"></i>&nbsp;<?php echo $this->database; ?></h3>
-			<a href="/mongomyadmin/collection/add">Add</a>
+			<br/>
 			<ul class="listCollection">
 			<?php 
 				$collections = $this->collections;
@@ -40,7 +40,7 @@
 							<tr>
 								<td>
 									<a href="/mongomyadmin/index/update?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Update</a> |
-									<a href="/mongomyadmin/index/remove?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Remove</a>
+									<a class="removeDocument" href="/mongomyadmin/index/remove?collection=<?php echo $_GET["collection"];?>&id=<?php echo $doc["_id"];?>">Remove</a>
 								</td>
 	
 								<?php foreach ($this->header as $key){

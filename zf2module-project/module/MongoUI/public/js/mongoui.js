@@ -20,4 +20,20 @@ $(function(){
 			$(this).parent().remove();
 		}
 	});
+	
+	$('.removeUser').click(function(){
+		return confirm("Are you sure you want to delete this user?");
+	});
+	
+	$('.removeDocument').click(function(){
+		return confirm("Are you sure you want to delete this document?");
+	});
+	
+	$('.removeCollection').click(function(){
+		return confirm("Are you sure you want to delete this collection?");
+	});
+	
+	$('.removeDatabase').click(function(){
+		return confirm("Are you sure you want to delete this database?\nThis action will also delete users from the database.");
+	});
 });
