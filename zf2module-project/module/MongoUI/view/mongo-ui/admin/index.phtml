@@ -39,6 +39,7 @@
 						<?php foreach ($this->users as $user){ ?>
 							<tr>
 								<td>
+									<a href="/mongomyadmin/admin/update?database=<?php echo $_GET["database"];?>&id=<?php echo $user["id"];?>">Update</a> |
 									<a class="removeUser" href="/mongomyadmin/admin/remove?database=<?php echo $_GET["database"];?>&name=<?php echo $user["name"];?>">Remove</a>
 								</td>
 								<td><?php echo $user["name"]; ?></td>

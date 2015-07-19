@@ -36,6 +36,7 @@ class AdminController extends AbstractActionController
 	    			foreach($this->mc->$db->selectCollection('system.users')->find() as $user){
 	    				if($_GET['database'] === $user['db']){
 	    					$tempUser = array();
+	    					$tempUser["id"] = $user["_id"];
 	    					$tempUser["name"] = $user["user"];
 	    					$tempUser["roles"] = $user["roles"];
 		    				array_push($users, $tempUser);
@@ -139,6 +140,93 @@ class AdminController extends AbstractActionController
 		}else{
 			return $this->redirect ()->toUrl ( "/mongomyadmin");
 		}
+    }
+    
+    public function updateAction()
+    {
+    	$connected = $this->init ();
+    	
+    	if($connected === true){
+    		if (isset ( $_POST ["update"] )) {
+    	
+    			if(false === $this->request->isPost()){
+    				return $this->redirect ()->toUrl ( "/mongomyadmin/admin?database=" . $_POST["database"] );
+    			}
+    	
+    			$post = $this->request->getPost();
+    	
+    			$dbs = $this->mc->listDBs();
+    			
+    			$db = $this->mc->selectDB('admin');
+    			$user;
+    			foreach($this->mc->$db->selectCollection('system.users')->find(array("_id" => $post->id)) as $u){
+    				$user = $u;
+    			}
+    			
+    			$mongoUpdateUserForm = new Form\MongoUpdateUser(null, $post->database, $user, $dbs['databases']);
+    			$mongoUpdateUserForm->setData($post);
+    	
+    			if(false === $mongoUpdateUserForm->isValid()){
+    				$view = new ViewModel([
+    						'error' => true,
+    						'mongoUpdateUserForm' => $mongoUpadteUserForm,
+    						'database' => $post->database
+    				]);
+    	
+    				return $view;
+    			}
+    	
+    			$db = $this->mc->selectDB($post->database);
+    			if($post->pwd != ""){
+	    			$command = array
+	    			(
+	    					"updateUser" => $post->username,
+	    					"pwd"        => $post->pwd,
+	    					"roles"      => array
+	    					(
+	    							array("role" => $post->role, "db" => $post->db)
+	    					)
+	    			);
+    			}else{
+    				$command = array
+    				(
+    						"updateUser" => $post->username,
+    						"roles"      => array
+    						(
+    								array("role" => $post->role, "db" => $post->db)
+    						)
+    				);
+    			}
+    	
+    			$response = $db->command($command);
+    			
+    			/*var_dump($response);
+    			
+    			die();*/
+    	
+    			return $this->redirect ()->toUrl ( "/mongomyadmin/admin?database=" . $post["database"] );
+    		} else {
+    			$view = new ViewModel ();
+    	
+    			if (!isset( $_GET ["database"] ) || $_GET ["database"] == "" && !isset( $_GET ["id"] ) || $_GET ["id"] == "") {
+    				$view->setTemplate ( "/mongomyadmin/admin" );
+    			} else {
+    				$dbs = $this->mc->listDBs();
+    				$db = $this->mc->selectDB('admin');
+    				$user;
+    				foreach($this->mc->$db->selectCollection('system.users')->find(array("_id" => $_GET["id"])) as $u){
+    					$user = $u;
+    				}
+
+    				$view->database = $_GET ["database"];
+    				$view->mongoUpdateUserForm = new Form\MongoUpdateUser ( null, $_GET["database"], $user, $dbs['databases']);
+    			}
+    	
+    			return $view;
+    		}
+    	}else{
+    		return $this->redirect ()->toUrl ( "/mongomyadmin");
+    	}
     }
 
     /**

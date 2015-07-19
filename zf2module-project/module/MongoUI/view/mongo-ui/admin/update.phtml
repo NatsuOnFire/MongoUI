@@ -1,0 +1,14 @@
+<h2>Update User in <?php echo $this->database; ?></h2>
+<section>
+    <?php if ($this->error): ?>
+        <p class="error">Des erreurs sont intervenues durant la validation du formulaire.</p>
+    <?php endif; ?>
+    <p>
+        <?php
+        $form = $this->mongoUpdateUserForm;
+        $form->setAttribute('action', $this->url(null, ['controller'=>'Admin', 'action'=>'update']));        
+        echo $this->form()->render($form);
+        ?>
+    </p>
+    <a href="/mongomyadmin/admin?database=<?php echo $this->database;?>"><< return to Database</a>
+</section>
