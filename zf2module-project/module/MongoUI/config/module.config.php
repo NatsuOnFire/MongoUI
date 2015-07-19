@@ -4,7 +4,9 @@ return [
 		'invokables' => [
 			'MongoUI\Controller\Index' => 'MongoUI\Controller\IndexController',
 			'MongoUI\Controller\Connection' => 'MongoUI\Controller\ConnectionController',
-			'MongoUI\Controller\Collection' => 'MongoUI\Controller\CollectionController'
+			'MongoUI\Controller\Collection' => 'MongoUI\Controller\CollectionController',
+			'MongoUI\Controller\Admin' => 'MongoUI\Controller\AdminController',
+			'MongoUI\Controller\Database' => 'MongoUI\Controller\DatabaseController'
 		]
 	],
 	'router' => [
@@ -61,8 +63,8 @@ return [
 		'cookie_domain'        => '',
 	],
 	'session_config' => [
-		// Set the session and cookie expiries to 15 minutes
-		'cache_expire' => 900,
-		'cookie_lifetime' => 900,
+		// Set the session and cookie expiries to 20 minutes
+		'cache_expire' => 1200,
+		'cookie_lifetime' => 1200,
 	],
 ];

@@ -1,0 +1,68 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3">
+			<h3><i class="fa fa-database"></i> Databases</h3>
+			<a href="/mongomyadmin/database/add">Add</a>
+			<ul class="listDatabase">
+			<?php 
+				$databases = $this->dbs;
+				foreach ($databases as $database){ ?>
+					<li>
+						<a class="removeDatabase" href="/mongomyadmin/database/remove?database=<?php echo $database['name']; ?>"><i class="fa fa-trash fa-2x"></i></a>
+					<?php if(isset($_GET["database"]) && $database['name'] === $_GET["database"]){ ?>
+						<a class="btn btn-success active database" href="/mongomyadmin/admin?database=<?php echo $database['name']; ?>">
+							<i class="fa fa-file-text"></i>&nbsp;<?php echo $database['name']; ?>
+						</a>
+					<?php }else{?>
+						<a class="btn btn-default database" href="/mongomyadmin/admin?database=<?php echo $database['name']; ?>">
+							<i class="fa fa-file-text"></i>&nbsp;<?php echo $database['name']; ?>
+						</a>	
+					<?php }?>
+					</li>
+				<?php }
+			?>
+			</ul>
+		</div>
+		<div class="col-sm-9">
+			<?php
+			require_once 'menu.phtml';
+			?>
+			<?php if(isset($_GET["database"]) && $_GET["database"] != "" && !$this->error){?>
+				<?php if(count($this->users) > 0){?>
+					<table class="table-striped table-bordered table-hover table-condensed" width="100%">
+						<tr>
+							<th>Actions</th>
+							<th>Name</th>
+							<th>Roles</th>
+							<th>Database</th>
+						</tr>
+						<?php foreach ($this->users as $user){ ?>
+							<tr>
+								<td>
+									<a href="/mongomyadmin/admin/remove?database=<?php echo $_GET["database"];?>&name=<?php echo $user["name"];?>">Remove</a>
+								</td>
+								<td><?php echo $user["name"]; ?></td>
+								<td>
+									<?php foreach ($user["roles"] as $role){?>
+										<?php echo $role["role"];?><br/>
+									<?php }?>
+								</td>
+								<td>
+									<?php foreach ($user["roles"] as $role){?>
+										<?php echo $role["db"];?><br/>
+									<?php }?>
+								</td>
+							</tr>
+						<?php }?>
+					</table>
+					<br/>
+				<?php }else{?>
+					<p>This database has no user.</p>
+				<?php }?>
+				<a href="/mongomyadmin/admin/add?database=<?php echo $_GET["database"];?>">Add User</a>
+			<?php }else if($this->error){
+				echo $this->error;
+			}?>
+		</div>
+	</div>
+</div>

@@ -27,6 +27,10 @@ class IndexController extends AbstractActionController {
 		$connected = $this->init ();
 		
 		if($connected === true){
+			if($this->database === "admin"){
+				return $this->redirect ()->toUrl( "/mongomyadmin/admin");
+			}
+			
 			$collections = $this->db->listCollections ();
 			
 			$view->database = $this->database;
@@ -169,6 +173,7 @@ class IndexController extends AbstractActionController {
 				
 				$i = 1;
 				$document = array ();
+				$keys = array();
 				foreach ( $post as $key => $value ) {
 					if ($key != "collection" && $key != "numberField" && $key != "add" && !$this->startsWith($key, "fieldValue")) {
 						if($this->startsWith($key, "fieldName")){
@@ -176,12 +181,28 @@ class IndexController extends AbstractActionController {
 								$tempKey = $post["fieldName".$i];
 								$tempValue = $post["fieldValue".$i];
 								$document[$tempKey] = $tempValue;
+								array_push($keys, $value);
 							}
 							$i++;
 						}else{
 							$document[$key] = $value;
+							array_push($keys, $key);
 						}
 					}
+				}
+				
+				$mongoAddDocumentForm = new Form\MongoAddDocument(null, $keys, $collection);
+				$mongoAddDocumentForm->setData($post);
+				
+				if(false === $mongoAddDocumentForm->isValid()){
+					$view = new ViewModel([
+							'error' => true,
+							'mongoAddDocumentForm' => $mongoAddDocumentForm,
+							'keys' => $keys,
+							'collection' => $post->collection
+					]);
+				
+					return $view;
 				}
 				
 				$collection->insert($document);

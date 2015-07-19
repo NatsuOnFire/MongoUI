@@ -24,22 +24,22 @@ button#addField{
 	cursor: pointer;
 }
 
-ul.listCollection{
+ul.listCollection, ul.listDatabase{
 	padding-left: 0;
 }
 
-ul.listCollection li{
+ul.listCollection li, ul.listDatabase li{
 	list-style: none;
 	text-decoration: none;
 	margin-bottom: 5px;
 	margin-top: 5px;
 }
 
-ul.listCollection li a.collection{
+ul.listCollection li a.collection, ul.listDatabase li a.database{
 	width: 90%;
 	text-align: left !important;
 }
 
-ul.listCollection li a.removeCollection{
+ul.listCollection li a.removeCollection, ul.listDatabase li a.removeDatabase{
 	vertical-align: bottom;
 }
