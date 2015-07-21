@@ -24,7 +24,7 @@ http://"host":"port"/mongomyadmin
 ### Gestion de collections et de documents
 
 1. Se connecter avec un utilisateur ayant les permissions readWrite ou readWriteAnyDatabase.
-2. Entrez le nom de la collection (champ Database) auquel l'utilisateur a ces permissions.
+2. Entrez le nom de la collection (champ Database) auquel l'utilisateur à ces permissions.
 
 ### Gestion de base de données et d'utilisateurs
 	
