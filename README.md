@@ -23,10 +23,10 @@ http://"host":"port"/mongomyadmin
 
 ### Gestion de collections et de documents
 
-1. Ce connecter avec un utilisateur ayant les permissions readWrite ou readWriteAnyDatabase.
+1. Se connecter avec un utilisateur ayant les permissions readWrite ou readWriteAnyDatabase.
 2. Entrez le nom de la collection (champ Database) auquel l'utilisateur a ces permissions.
 
 ### Gestion de base de données et d'utilisateurs
 	
-1. Ce connecter avec l'utilisateur ayant les permissions userAdminAnyDatabase ET dbAdminAnyDatabase.
+1. Se connecter avec l'utilisateur ayant les permissions userAdminAnyDatabase ET dbAdminAnyDatabase.
 2. Dans le champs Database, entrez "admin" (la base administrateur de mongodb).
